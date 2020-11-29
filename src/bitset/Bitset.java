@@ -59,13 +59,13 @@ public class Bitset implements Iterable<Boolean> {
         return ((this.data[n / 8] + 128) / (int) Math.pow(2, 7 - n % 8)) % 2 == 1;
     }
 
-//    public String toString() {
-//        StringBuilder result = new StringBuilder();
-//        int index = 1;
-//        for (Boolean b : this)
-//            result.append(b ? "1" : "0").append((index++ % 8 == 0) ? "." : "");
-//        return result.toString();
-//    }
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        int index = 1;
+        for (Boolean b : this)
+            result.append(b ? "1" : "0").append((index++ % 8 == 0) ? "." : "");
+        return result.toString();
+    }
 
 //    public void difference() {
 //        for (int i = 0; i < this.data.length; i++) {

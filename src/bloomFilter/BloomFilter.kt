@@ -40,6 +40,10 @@ class BloomFilter<T : Any>(private val N: Int) : Set<T> {
     override val size: Int
         get() = N
 
+    override fun contains(element: T): Boolean {
+        TODO("Not yet implemented")
+    }
+
     override fun containsAll(elements: Collection<T>): Boolean {
         TODO("Not yet implemented")
     }
@@ -49,10 +53,6 @@ class BloomFilter<T : Any>(private val N: Int) : Set<T> {
     }
 
     override fun iterator(): Iterator<T> {
-        TODO("Not yet implemented")
-    }
-
-    override fun contains(element: T): Boolean {
         TODO("Not yet implemented")
     }
 }
