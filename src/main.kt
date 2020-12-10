@@ -13,8 +13,8 @@ fun hash3(a: Int): Int = (a / (Int.MAX_VALUE / size) / 2) + size / 2
 // исследование зависимости вероятности от количества хэш-ф
 fun main() {
     val bl = BloomFilter<Int>(size, 10)
-
-    bl.setHashes(::hash1, ::hash2)
+    println(bl.optimalHashesNumber())
+    bl.setHashes(::hash1, ::hash2, ::hash3)
     println(bl.mightContains(6))
     bl.add(6)
     println(bl.mightContains(6))
