@@ -35,23 +35,6 @@ public class Bitset implements Iterable<Boolean> {
         this.data[byteIndex] = (byte) (((this.data[byteIndex] + 128) | (int) Math.pow(2, 7 - n % 8)) - 128);
     }
 
-//    public void add(int[] numbers) {
-//        for (int n : numbers)
-//            add(n);
-//    }
-
-//    public void remove(int n) {
-//        if (n < 0 || n >= this.length)
-//            throw new IllegalArgumentException();
-//
-//        int byteIndex = n / 8;
-//        this.data[byteIndex] = (byte) (((this.data[byteIndex] + 128) & (255 - (int) Math.pow(2, 7 - n % 8))) - 128);
-//    }
-
-//    public void remove(int[] numbers) {
-//        for (int n : numbers)
-//            remove(n);
-//    }
 
     public boolean contains(int n) {
         if (n < 0 || n >= this.length)
@@ -66,40 +49,6 @@ public class Bitset implements Iterable<Boolean> {
             result.append(b ? "1" : "0").append((index++ % 8 == 0) ? "." : "");
         return result.toString();
     }
-
-//    public void difference() {
-//        for (int i = 0; i < this.data.length; i++) {
-//            this.data[i] = (byte) (-this.data[i] - (byte) 1);
-//        }
-//    }
-
-//    public Bitset union(Bitset bitset) {
-//        Bitset result;
-//        if (this.length > bitset.length) {
-//            result = this;
-//            for (int i = 0; i < bitset.data.length; i++)
-//                result.data[i] = (byte) (((result.data[i] + 128) | (bitset.data[i] + 128)) - 128);
-//        } else {
-//            result = bitset;
-//            for (int i = 0; i < this.data.length; i++)
-//                result.data[i] = (byte) (((result.data[i] + 128) | (this.data[i] + 128)) - 128);
-//        }
-//        return result;
-//    }
-
-//    public Bitset intersect(Bitset bitset) {
-//        Bitset result;
-//        if (bitset.length < this.length) {
-//            result = bitset;
-//            for (int i = 0; i < bitset.data.length; i++)
-//                result.data[i] = (byte) (((result.data[i] + 128) & (this.data[i] + 128)) - 128);
-//        } else {
-//            result = this;
-//            for (int i = 0; i < this.data.length; i++)
-//                result.data[i] = (byte) (((result.data[i] + 128) & (bitset.data[i] + 128)) - 128);
-//        }
-//        return result;
-//    }
 
     @NotNull
     public Iterator<Boolean> iterator() {

@@ -1,13 +1,18 @@
 import bloomFilter.BloomFilter
+import kotlin.math.abs
 
 
-fun hash1(e: Int): Int = e * 2
-fun hash2(e: Int): Int = e / 3
-fun hash3(e: Int): Int = e -5
+const val size = 20
 
+fun hash1(a: Int): Int = abs(a) % size
+fun hash2(a: Int): Int = (abs(a) / size) % size
+fun hash3(a: Int): Int = (a / (Int.MAX_VALUE / size) / 2) + size / 2
 
+// расчет оптим кол-ва хэш-функций
+//произвольное кол-во хеш-ф   // done
+//исследование зависимости вероятн от количества хэш-ф
 fun main() {
-    val bl = BloomFilter<Int>(20)
+    val bl = BloomFilter<Int>(size)
     bl.setHashes(::hash1, ::hash2, ::hash3)
     println(bl.mightContains(6))
     bl.add(6)

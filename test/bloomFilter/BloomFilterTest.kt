@@ -96,26 +96,4 @@ class BloomFilterTest {
             assertTrue(pos * 0.95 < pos0)   //accounting for error
         }
     }
-
-//    @Test
-//    fun containsTest() {
-//        for (n in listOf(1, 10, 50, 100, 500)) {
-//            val controlList = mutableListOf<Int>()
-//            val random = Random()
-//            for (i in 0 until n)
-//                controlList.add(random.nextInt())
-//            val bloom = BloomFilter<Int>(size)
-//            bloom.setHashes(::intHash1, ::intHash2, ::intHash3)
-//            for (e in controlList)
-//                assertFalse(bloom.mightContains(e))
-//            var falsePositives = 0
-//            for (i in controlList.indices) {
-//                bloom.add(controlList[i])
-//                for (j in 0..i)
-//                    assertTrue(bloom.mightContains(j))
-//            }
-//            for (e in controlList)
-//                assertTrue(bloom.mightContains(e))
-//        }
-//    }
 }

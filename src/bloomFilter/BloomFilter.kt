@@ -9,32 +9,35 @@ class BloomFilter<T : Any>(private val N: Int) : Set<T> {
     private val bitset = Bitset(N)
     private var hashFunctionsSet = false
 
-    inner class Hashes(private val hash1: (T) -> Int, private val hash2: (T) -> Int, private val hash3: (T) -> Int) {
-        fun hash1(e: T) = hash1.invoke(e)
-        fun hash2(e: T) = hash2.invoke(e)
-        fun hash3(e: T) = hash3.invoke(e)
-    }
+    inner class Hashes(vararg val hashes: (T) -> Int)
 
     private lateinit var hashes: Hashes
 
 
-    fun setHashes(hash1: (T) -> Int, hash2: (T) -> Int, hash3: (T) -> Int) {
-        this.hashes = Hashes(hash1, hash2, hash3)
+    fun setHashes(vararg hashes: (T) -> Int) {
+        this.hashes = Hashes(*hashes)
         this.hashFunctionsSet = true
     }
 
 
     fun add(e: T) {
         check(this.hashFunctionsSet) { "Hash functions are not set" }
-        bitset.add(this.hashes.hash1(e))
-        bitset.add(this.hashes.hash2(e))
-        bitset.add(this.hashes.hash3(e))
+
+        for (hash in this.hashes.hashes)
+            bitset.add(hash(e))
     }
 
     fun mightContains(e: T): Boolean {
         check(this.hashFunctionsSet) { "Hash functions are not set" }
-        return bitset.contains(this.hashes.hash1(e)) && bitset.contains(this.hashes.hash2(e)) &&
-                bitset.contains(this.hashes.hash3(e))
+
+        var result = true
+        for (hash in this.hashes.hashes)
+            if(!bitset.contains(hash(e))){
+                result = false
+                break
+            }
+
+        return result
     }
 
     override val size: Int
