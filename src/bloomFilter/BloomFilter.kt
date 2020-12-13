@@ -1,9 +1,7 @@
 package bloomFilter
 
 import bitset.Bitset
-import kotlin.math.abs
-import kotlin.math.ln
-import kotlin.math.round
+import kotlin.math.*
 
 @Suppress("unused")
 
@@ -28,6 +26,15 @@ class BloomFilter<T : Any>(private val M: Int, private val N: Int = -1) : Set<T>
     private lateinit var hashes: Hashes
 
     fun setHashes(vararg hashes: (T) -> Int, doNotChange: Boolean = false) {
+        this.setHashFunctions(*hashes, doNotChange = doNotChange)
+    }
+
+    fun setHashes(hashes: List<(T) -> Int>, doNotChange: Boolean = false) {
+        this.setHashFunctions(*hashes.toTypedArray(), doNotChange = doNotChange)
+    }
+
+    private fun setHashFunctions(vararg hashes: (T) -> Int, doNotChange: Boolean) {
+        check(hashes.isNotEmpty())
         this.hashes = if (N > 0) {
             val o = optimalHashesNumber()
             if (hashes.size != o)
@@ -48,53 +55,55 @@ class BloomFilter<T : Any>(private val M: Int, private val N: Int = -1) : Set<T>
 
     fun add(e: T) {
         check(this.hashFunctionsSet) { "Hash functions are not set" }
+        for (hash in this.hashes.hashes)
+            this.bitset.add(abs(hash(e)) % this.size)
+    }
 
-        for (hash in this.hashes.hashes) {
-            bitset.add(abs(hash(e)) % size)
-        }
+    fun addAll(elements: Collection<T>) {
+        for (e in elements)
+            this.add(e)
     }
 
     fun mightContains(e: T): Boolean {
         check(this.hashFunctionsSet) { "Hash functions are not set" }
-
-        var result = true
         for (hash in this.hashes.hashes)
-            if (!bitset.contains(abs(hash(e)) % size)) {
-                result = false
-                break
-            }
-
-        return result
+            if (!this.bitset.contains(abs(hash(e)) % this.size))
+                return false
+        return true
     }
 
     fun optimalHashesNumber(): Int {
         check(N > 0) { "Elements number is not set or set incorrectly" }
-        var n = round(ln(2.0) * this.size / N).toInt()
+        var n = round(ln(2.0) * this.size.toDouble() / N).toInt()
         if (n < 1)
             n = 1
         return n
     }
 
     val countHashes: Int
-        get() = hashes.hashes.size
+        get() = this.hashes.hashes.size
 
     override val size: Int
         get() = M
 
-    override fun contains(element: T): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun contains(element: T): Boolean = this.mightContains(element)
 
     override fun containsAll(elements: Collection<T>): Boolean {
-        TODO("Not yet implemented")
+        for (e in elements)
+            if (!this.contains(e))
+                return false
+        return true
     }
 
     override fun isEmpty(): Boolean {
-        TODO("Not yet implemented")
+        for (i in this.bitset)
+            if (i == true)
+                return false
+        return true
     }
 
     override fun iterator(): Iterator<T> {
-        TODO("Not yet implemented")
+        throw NotImplementedError()
     }
 }
 
