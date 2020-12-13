@@ -192,7 +192,6 @@ class BloomFilterTest {
             val bloom = BloomFilter<Person>(size, n)
             bloom.setHashes(hashes.subList(0, number), doNotChange = true)
             var prob = 0.0
-            var fp_aver = 0
 
             for (i in controlList.indices) {
                 bloom.add(controlList[i])
@@ -203,11 +202,9 @@ class BloomFilterTest {
                         falsePositives += 1
                 val pos = falsePositives / n.toDouble()
                 prob += pos
-                fp_aver += falsePositives
             }
-            fp_aver /= n
             prob /= n
-            println("$number function(s) $prob average probability fp $fp_aver")
+            println("$number function(s) $prob average probability")
         }
     }
 }
